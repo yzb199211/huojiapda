@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.gson.Gson;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.yyy.huojiapda.R;
 import com.yyy.huojiapda.net.NetConfig;
@@ -47,6 +48,9 @@ public class BillListActivity extends AppCompatActivity {
     String url;
     int formid;
 
+    List<BillInfo.ReportColumns2> columns;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,9 +61,14 @@ public class BillListActivity extends AppCompatActivity {
     }
 
     private void init() {
+        initList();
         getDefaultData();
         initView();
         getData();
+    }
+
+    private void initList() {
+        columns = new ArrayList<>();
     }
 
     private void getDefaultData() {
@@ -110,7 +119,7 @@ public class BillListActivity extends AppCompatActivity {
         });
     }
 
-    private void initData(String string) throws JSONException ,NullPointerException{
+    private void initData(String string) throws JSONException, NullPointerException {
         JSONObject jsonObject = new JSONObject(string);
         if (jsonObject.getBoolean("success")) {
             initInfo(jsonObject.optString("info"));
@@ -119,8 +128,8 @@ public class BillListActivity extends AppCompatActivity {
         }
     }
 
-    private void initInfo(String info) throws NullPointerException{
-
+    private void initInfo(String info) throws NullPointerException {
+        columns.addAll(new Gson().fromJson(info, BillInfo.class).getReportColumns2());
 
     }
 
