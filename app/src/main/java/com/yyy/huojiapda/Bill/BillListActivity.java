@@ -121,6 +121,7 @@ public class BillListActivity extends AppCompatActivity {
 
     private void initInfo(String info) throws NullPointerException{
 
+
     }
 
     @OnClick({R.id.iv_back, R.id.tv_right})
