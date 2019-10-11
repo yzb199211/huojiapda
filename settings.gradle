@@ -1,0 +1,2 @@
+include ':app', ':pda'
+rootProject.name='huojiapda'

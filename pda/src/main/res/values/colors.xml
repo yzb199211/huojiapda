@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="public_activity_top">#11999999</color>
+
+
+    <color name="public_default_text_color">#000</color>
+    <color name="public_default_bg_color">#eee</color>
+    <color name="public_default_content_color">#666666</color>
+    <color name="public_editor_stroke_gray">#666</color>
+    <color name="public_editor_solid_gray">#ddd</color>
+    <color name="public_btn_blue_normal">#1296db</color>
+    <color name="public_btn_blue_press">#122DDF</color>
+
+
+    <color name="pubilc_gray">#555</color>
+    <color name="pubilc_black">#000000</color>
+    <color name="pubilc_white">#fff</color>
+    <color name="pubilc_form_menu_white">#FCFCED</color>
+
+    <color name="pubilc_blue">#00B0FF</color>
+    <color name="pubilc_blue1">#F5FBFD</color>
+
+    <color name="pubilc_tab_selected">#1296db</color>
+    <color name="pubilc_pickerview_bgColor_overlay">#60000000</color>
+    <color name="pubilc_switch_false">#888</color>
+    <color name="pubilc_switch_true">#33da33</color>
+    <color name="pubilc_switch_thumb">#eee</color>
+
+    <color name="pubilc_bottom_delete">#F39C18</color>
+    <color name="pubilc_bottom_delete_press">#C57705</color>
+    <color name="pubilc_bottom_submit">#FFEA00</color>
+    <color name="pubilc_bottom_submit_press">#E2CF08</color>
+    <color name="pubilc_bottom_save">#1296db</color>
+    <color name="pubilc_bottom_save_press">#122DDF</color>
+</resources>
