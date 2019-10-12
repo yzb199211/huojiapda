@@ -6,7 +6,7 @@ public class BillInfo {
     private List<ReportConditionBean> ReportCondition;
     private List<ReportInfoBean> ReportInfo;
     private List<ReportColumnsBean> ReportColumns;
-    private List<ReportColumns2> ReportColumns2;
+    private List<ReportColumn2> ReportColumns2;
 
     public List<ReportConditionBean> getReportCondition() {
         return ReportCondition;
@@ -32,11 +32,11 @@ public class BillInfo {
         this.ReportColumns = ReportColumns;
     }
 
-    public List<ReportColumns2> getReportColumns2() {
+    public List<ReportColumn2> getReportColumns2() {
         return ReportColumns2;
     }
 
-    public void setReportColumns2(List<ReportColumns2> ReportColumns2) {
+    public void setReportColumns2(List<ReportColumn2> ReportColumns2) {
         this.ReportColumns2 = ReportColumns2;
     }
 
@@ -548,7 +548,7 @@ public class BillInfo {
         }
     }
 
-    public static class ReportColumns2 {
+    public static class ReportColumn2 {
         /**
          * iSerial : 1
          * iColumnNum : 1

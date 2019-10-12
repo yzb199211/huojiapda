@@ -160,13 +160,17 @@ public class MainActivity extends AppCompatActivity {
         menuAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                goActivity(menus.get(position).formId());
+                goActivity(menus.get(position).formId(), menus.get(position).menuName());
             }
         });
     }
 
-    private void goActivity(int formId) {
-        startActivity(new Intent().putExtra("formid", formId).setClass(this, BillListActivity.class));
+    private void goActivity(int formId, String title) {
+        startActivity(new Intent()
+                .putExtra("formid", formId)
+                .putExtra("title", title)
+                .setClass(this, BillListActivity.class));
+
     }
 
     @OnClick({R.id.iv_back, R.id.tv_empty})

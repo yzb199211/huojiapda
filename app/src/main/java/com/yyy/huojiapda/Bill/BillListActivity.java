@@ -1,25 +1,32 @@
 package com.yyy.huojiapda.Bill;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
+import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.yyy.huojiapda.R;
 import com.yyy.huojiapda.net.NetConfig;
 import com.yyy.huojiapda.net.Otype;
 import com.yyy.pda.dialog.LoadingDialog;
 import com.yyy.pda.interfaces.ResponseListener;
+import com.yyy.pda.list.RecyclerViewDivider;
 import com.yyy.pda.net.NetParams;
 import com.yyy.pda.net.NetUtil;
 import com.yyy.pda.util.SharedPreferencesHelper;
 import com.yyy.pda.util.StringUtil;
 import com.yyy.pda.util.Toasts;
+import com.yyy.pda.view.ConfigureInfo;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -48,8 +55,10 @@ public class BillListActivity extends AppCompatActivity {
     String url;
     int formid;
 
-    List<BillInfo.ReportColumns2> columns;
+    List<BillInfo.ReportColumn2> columns;
+    List<List<ConfigureInfo>> items;
 
+    BillListAdapter mAdpater;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +78,7 @@ public class BillListActivity extends AppCompatActivity {
 
     private void initList() {
         columns = new ArrayList<>();
+        items = new ArrayList<>();
     }
 
     private void getDefaultData() {
@@ -85,6 +95,27 @@ public class BillListActivity extends AppCompatActivity {
         ivBack.setVisibility(View.VISIBLE);
         tvRight.setVisibility(View.VISIBLE);
         tvRight.setText(getString(R.string.add));
+        tvTitle.setText(getIntent().getStringExtra("title"));
+        initListView();
+
+
+    }
+
+    private void initListView() {
+        rvBill.setLayoutManager(getManager());
+        rvBill.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
+        rvBill.setLoadingMoreProgressStyle(ProgressStyle.Pacman);
+        rvBill.setArrowImageView(R.mipmap.iconfont_downgrey);
+        rvBill.getDefaultRefreshHeaderView()
+                .setRefreshTimeVisible(true);
+        rvBill.setLoadingMoreEnabled(false);
+        rvBill.addItemDecoration(new RecyclerViewDivider(this, LinearLayoutManager.VERTICAL));
+    }
+
+    private LinearLayoutManager getManager() {
+        LinearLayoutManager manager = new LinearLayoutManager(this);
+        manager.setOrientation(RecyclerView.VERTICAL);
+        return manager;
     }
 
     private List<NetParams> getParams() {
@@ -102,6 +133,7 @@ public class BillListActivity extends AppCompatActivity {
             public void onSuccess(String string) {
                 try {
                     initData(string);
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                     LoadingFinish(getString(R.string.error_json));
@@ -123,14 +155,103 @@ public class BillListActivity extends AppCompatActivity {
         JSONObject jsonObject = new JSONObject(string);
         if (jsonObject.getBoolean("success")) {
             initInfo(jsonObject.optString("info"));
+            getListData(jsonObject.getJSONArray("data"));
         } else {
             LoadingFinish(jsonObject.optString("message"));
         }
+        setView();
+    }
+
+    private void setView() {
+        if (items.size() > 0) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Refresh();
+                    LoadingFinish("");
+                }
+            });
+        } else {
+            LoadingFinish(getString(R.string.empty_data));
+        }
+
+    }
+
+    private void Refresh() throws NullPointerException {
+        if (mAdpater == null) {
+            mAdpater = new BillListAdapter(this, items);
+            rvBill.setAdapter(mAdpater);
+            setLoaderListener();
+        } else {
+            mAdpater.notifyDataSetChanged();
+        }
+    }
+
+    private void setLoaderListener() {
+        rvBill.setLoadingListener(new XRecyclerView.LoadingListener() {
+            @Override
+            public void onRefresh() {
+                items.clear();
+                mAdpater.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onLoadMore() {
+
+            }
+        });
     }
 
     private void initInfo(String info) throws NullPointerException {
         columns.addAll(new Gson().fromJson(info, BillInfo.class).getReportColumns2());
+    }
 
+    private List<List<ConfigureInfo>> getListData(JSONArray data) throws NullPointerException, JSONException {
+        for (int i = 0; i < data.length(); i++) {
+            List<ConfigureInfo> configureInfos = new ArrayList<>();
+            getConfigureInfo(configureInfos, data.getJSONObject(i));
+            items.add(configureInfos);
+        }
+        return items;
+    }
+
+    private void getConfigureInfo(List<ConfigureInfo> configureInfos, JSONObject jsonObject) throws NullPointerException {
+        for (int i = 0; i < columns.size(); i++) {
+            ConfigureInfo info = new ConfigureInfo();
+            BillInfo.ReportColumn2 column = columns.get(i);
+
+            info.setSingleLine(true);
+            info.setWidthPercent(StringUtil.isPercent(column.getIProportio()));
+            info.setRow(column.getISerial());
+            info.setTitleSize(getInfoTitleSize(column.getSNameFontSize()));
+            info.setTitle(column.getSFieldsDisplayName());
+            info.setTitleBold((column.getINameFontBold() == 1) ? true : false);
+            if (StringUtil.isColor(column.getSNameFontColor()))
+                info.setTitleColor(Color.parseColor(column.getSNameFontColor()));
+
+            info.setContentSize(getInfoContentSize(column.getSValueFontSize()));
+            info.setContent(jsonObject.optString(column.getSFieldsName()));
+            info.setContentBold((column.getIValueFontBold() == 1) ? true : false);
+            if (StringUtil.isColor(column.getSValueFontColor()))
+                info.setTitleColor(Color.parseColor(column.getSValueFontColor()));
+            configureInfos.add(info);
+        }
+    }
+
+    private int getInfoContentSize(String sValueFontSize) {
+        if (StringUtil.isNotEmpty(sValueFontSize) && StringUtil.isInteger(sValueFontSize)) {
+            return Integer.parseInt(sValueFontSize);
+        } else {
+            return 0;
+        }
+    }
+
+    private int getInfoTitleSize(String sNameFontSize) {
+        if (StringUtil.isNotEmpty(sNameFontSize) && StringUtil.isInteger(sNameFontSize)) {
+            return Integer.parseInt(sNameFontSize);
+        } else {
+            return 0;
+        }
     }
 
     @OnClick({R.id.iv_back, R.id.tv_right})
