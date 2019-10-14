@@ -26,7 +26,7 @@ import com.yyy.pda.net.NetUtil;
 import com.yyy.pda.util.SharedPreferencesHelper;
 import com.yyy.pda.util.StringUtil;
 import com.yyy.pda.util.Toasts;
-import com.yyy.pda.view.ConfigureInfo;
+import com.yyy.pda.view.Configure.ConfigureInfo;
 
 import org.json.JSONArray;
 import org.json.JSONException;

@@ -1,4 +1,4 @@
-package com.yyy.pda.view;
+package com.yyy.pda.view.Configure;
 
 import android.content.Context;
 import android.text.TextUtils;

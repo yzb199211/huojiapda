@@ -1,4 +1,4 @@
 <resources>
 
-
+    <string name="address_empty">请求地址为空</string>
 </resources>

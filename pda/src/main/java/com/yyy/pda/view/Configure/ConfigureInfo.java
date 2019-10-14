@@ -1,4 +1,4 @@
-package com.yyy.pda.view;
+package com.yyy.pda.view.Configure;
 
 public class ConfigureInfo {
     //第一块详情中设置内容是否可以换行，第二块样式中设置当行是否有多列

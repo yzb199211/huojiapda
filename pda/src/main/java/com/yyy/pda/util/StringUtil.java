@@ -1,9 +1,12 @@
 package com.yyy.pda.util;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
+
+import com.yyy.pda.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -125,34 +128,34 @@ public class StringUtil {
     }
 
     /*获取筛选条件默认值*/
-//    public static String getDefaulText(Context context, String text) {
-//        text = TextUtils.isEmpty(text) ? "" : text;
-//        SharedPreferencesHelper preferencesHelper = new SharedPreferencesHelper(context, context.getResources().getString(R.string.preferenceCache));
-//
-//        switch (text) {
-//            case "UserID":
-//                text = (String) preferencesHelper.getSharedPreference("userid", "");
-//                break;
-//            case "UserName":
-//                text = (String) preferencesHelper.getSharedPreference("username", "");
-//                break;
-//            case "CurrentDate":
-//                text = getDate(null);
-//                break;
-//            case "CurrentDateTime":
-//                text = getTime(null);
-//                break;
-//            case "Departid":
-//                text = (String) preferencesHelper.getSharedPreference("userDepartment", "");
-//                break;
-//            case "NewGUID":
-//                text = new RandomGUID().toString();
-//                break;
-//            default:
-//                break;
-//        }
-//        return text;
-//    }
+    public static String getDefaulText(Context context, String text,String prefrence) {
+        text = TextUtils.isEmpty(text) ? "" : text;
+        SharedPreferencesHelper preferencesHelper = new SharedPreferencesHelper(context,prefrence);
+
+        switch (text) {
+            case "UserID":
+                text = (String) preferencesHelper.getSharedPreference("userid", "");
+                break;
+            case "UserName":
+                text = (String) preferencesHelper.getSharedPreference("username", "");
+                break;
+            case "CurrentDate":
+                text = getDate(null);
+                break;
+            case "CurrentDateTime":
+                text = getTime(null);
+                break;
+            case "Departid":
+                text = (String) preferencesHelper.getSharedPreference("userDepartment", "");
+                break;
+            case "NewGUID":
+                text = new RandomGUID().toString();
+                break;
+            default:
+                break;
+        }
+        return text;
+    }
 
     /*解析lookup数据*/
     public static String getLookupData(String tables, String keyReturn, String keyShow) throws JSONException {

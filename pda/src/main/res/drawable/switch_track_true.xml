@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <size android:height="@dimen/public_dp_30" />
+    <corners android:radius="@dimen/public_dp_15" />
+    <gradient
+        android:endColor="@color/pubilc_switch_false"
+        android:startColor="@color/pubilc_switch_true" />
+</shape>

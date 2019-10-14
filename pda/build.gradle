@@ -23,7 +23,19 @@ android {
     }
 
 }
+repositories {
 
+    flatDir {
+        dirs 'libs'
+    }
+}
+allprojects {
+    repositories {
+        google()
+        jcenter()
+        maven { url 'https://jitpack.io' }
+    }
+}
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
@@ -39,5 +51,6 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:3.14.1")
     implementation('com.google.code.gson:gson:2.8.5')
 
+    implementation(name: 'yyylibrary-release', ext: 'aar')
 
 }

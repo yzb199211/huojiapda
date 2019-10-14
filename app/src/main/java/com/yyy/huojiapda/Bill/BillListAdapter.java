@@ -7,8 +7,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.yyy.pda.view.ConfigureInfo;
-import com.yyy.pda.view.ConfigureView;
+import com.yyy.pda.view.Configure.ConfigureInfo;
+import com.yyy.pda.view.Configure.ConfigureView;
 
 import java.util.List;
 
