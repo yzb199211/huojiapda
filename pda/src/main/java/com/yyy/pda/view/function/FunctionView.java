@@ -100,16 +100,16 @@ public class FunctionView extends LinearLayout {
 
     private void init() {
         getDefaulData();
-        LayoutInflater.from(context).inflate(R.layout.select_view, this, true);
-        setGravity(Gravity.CENTER_VERTICAL);
-        setOrientation(HORIZONTAL);
-        LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, context.getResources().getDimensionPixelOffset(R.dimen.public_dp_40));
-//        params.height = context.getResources().getDimensionPixelOffset(R.dimen.public_dp_40);
-        setPadding(context.getResources().getDimensionPixelOffset(R.dimen.public_dp_10), context.getResources().getDimensionPixelOffset(R.dimen.public_dp_10), context.getResources().getDimensionPixelOffset(R.dimen.public_dp_10), context.getResources().getDimensionPixelOffset(R.dimen.public_dp_10));
-        params.topMargin = context.getResources().getDimensionPixelOffset(R.dimen.public_dp_1);
-        setLayoutParams(params);
-        setBackgroundColor(context.getResources().getColor(R.color.pubilc_white));
+        initView();
+        initDefault();
+        setLayoutParams(layoutParams());
+        setView();
 
+    }
+
+
+    private void initView() {
+        LayoutInflater.from(context).inflate(R.layout.select_view, this, true);
         tvTitle = findViewById(R.id.tv_title);
         tvContent = findViewById(R.id.tv_content);
         etContent = findViewById(R.id.et_content);
@@ -118,8 +118,22 @@ public class FunctionView extends LinearLayout {
         tvContent.setHint(TextUtils.isEmpty(hint) ? "" : hint);
         tvContent.setText(getDefaulText(context, text, preference));
         this.text = getDefaulText(context, text, preference);
-        setView();
 
+    }
+
+    private void initDefault() {
+        setGravity(Gravity.CENTER_VERTICAL);
+        setOrientation(HORIZONTAL);
+        setBackgroundColor(context.getResources().getColor(R.color.pubilc_white));
+    }
+
+    private LayoutParams layoutParams() {
+        LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, context.getResources().getDimensionPixelOffset(R.dimen.public_dp_40));
+//        params.height = context.getResources().getDimensionPixelOffset(R.dimen.public_dp_40);
+
+        setPadding(context.getResources().getDimensionPixelOffset(R.dimen.public_dp_10), context.getResources().getDimensionPixelOffset(R.dimen.public_dp_10), context.getResources().getDimensionPixelOffset(R.dimen.public_dp_10), context.getResources().getDimensionPixelOffset(R.dimen.public_dp_10));
+        params.topMargin = context.getResources().getDimensionPixelOffset(R.dimen.public_dp_1);
+        return params;
     }
 
     private void getDefaulData() {

@@ -2,6 +2,7 @@ package com.yyy.huojiapda.Bill;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -37,6 +38,8 @@ public class BillDetailActivity extends AppCompatActivity {
     TextView tvTitle;
     @BindView(R.id.ll_content)
     LinearLayout llContent;
+    @BindView(R.id.fl_content)
+    FrameLayout flContent;
 
     SharedPreferencesHelper preferencesHelper;
 
@@ -135,7 +138,6 @@ public class BillDetailActivity extends AppCompatActivity {
     }
 
 
-
     private void getKey(int key) {
         this.key = this.key == 0 ? key : this.key;
     }
@@ -161,6 +163,7 @@ public class BillDetailActivity extends AppCompatActivity {
             this.childLookup.addAll(childLookup);
         }
     }
+
     private void setView() {
 
     }
