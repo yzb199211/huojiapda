@@ -17,7 +17,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-
+        <activity android:name=".Bill.BillDetailActivity"></activity>
         <activity
             android:name=".login.LoginActivity"
             android:screenOrientation="portrait"

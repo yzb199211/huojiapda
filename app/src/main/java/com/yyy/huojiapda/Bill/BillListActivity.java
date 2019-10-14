@@ -1,7 +1,9 @@
 package com.yyy.huojiapda.Bill;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -53,6 +55,7 @@ public class BillListActivity extends AppCompatActivity {
 
     String userid;
     String url;
+    String title;
     int formid;
 
     List<BillInfo.ReportColumn2> columns;
@@ -89,13 +92,14 @@ public class BillListActivity extends AppCompatActivity {
 
     private void getIntentData() {
         formid = getIntent().getIntExtra("formid", 0);
+        title = getIntent().getStringExtra("title");
     }
 
     private void initView() {
         ivBack.setVisibility(View.VISIBLE);
         tvRight.setVisibility(View.VISIBLE);
         tvRight.setText(getString(R.string.add));
-        tvTitle.setText(getIntent().getStringExtra("title"));
+        tvTitle.setText(title);
         initListView();
 
 
@@ -155,6 +159,7 @@ public class BillListActivity extends AppCompatActivity {
         JSONObject jsonObject = new JSONObject(string);
         if (jsonObject.getBoolean("success")) {
             initInfo(jsonObject.optString("info"));
+            Log.e("data", jsonObject.optString("data"));
             getListData(jsonObject.getJSONArray("data"));
         } else {
             LoadingFinish(jsonObject.optString("message"));
@@ -261,8 +266,17 @@ public class BillListActivity extends AppCompatActivity {
                 finish();
                 break;
             case R.id.tv_right:
+                goDetail(0);
                 break;
         }
+    }
+
+    private void goDetail(int key) {
+        startActivity(new Intent()
+                .setClass(this, BillDetailActivity.class)
+                .putExtra("formid", formid)
+                .putExtra("title", title)
+                .putExtra("key", key));
     }
 
     private void LoadingFinish(String msg) {
