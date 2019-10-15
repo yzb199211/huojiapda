@@ -165,7 +165,7 @@ public class BillDetailActivity extends AppCompatActivity {
     }
 
     private void setView() {
-
+        
     }
 
 

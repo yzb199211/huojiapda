@@ -1,4 +1,4 @@
-package com.yyy.pda.view.function;
+package com.yyy.huojiapda.Bill;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -26,7 +26,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-
 import com.yyy.pda.R;
 import com.yyy.pda.dialog.LoadingDialog;
 import com.yyy.pda.interfaces.ResponseListener;
@@ -34,7 +33,6 @@ import com.yyy.pda.lookup.LookUpActivity;
 import com.yyy.pda.net.NetParams;
 import com.yyy.pda.net.NetUtil;
 import com.yyy.pda.util.SharedPreferencesHelper;
-import com.yyy.pda.util.StringUtil;
 import com.yyy.pda.util.Toasts;
 import com.yyy.yyylibrary.pick.builder.TimePickerBuilder;
 import com.yyy.yyylibrary.pick.listener.OnTimeSelectChangeListener;
@@ -56,7 +54,7 @@ import static com.yyy.pda.util.StringUtil.getTime;
 import static com.yyy.pda.util.StringUtil.isNotEmpty;
 
 
-public class FunctionView extends LinearLayout {
+public class FunctionBillView extends LinearLayout {
     Context context;
     TextView tvTitle;
     TextView tvContent;
@@ -64,6 +62,8 @@ public class FunctionView extends LinearLayout {
     Switch switvhContent;
 
     OnClickListener onClickListener;
+
+    private BillDetailInfo.Info.FormColumns column;
 
     private int code;
     private String view_type = "";
@@ -83,17 +83,17 @@ public class FunctionView extends LinearLayout {
 
     SharedPreferencesHelper sharedPreferencesHelper;
 
-    public FunctionView(Context context) {
+    public FunctionBillView(Context context) {
         this(context, null);
     }
 
-    public FunctionView(Context context, @Nullable AttributeSet attrs) {
+    public FunctionBillView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
 
     }
 
-    public FunctionView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public FunctionBillView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs);
     }
 
