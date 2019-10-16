@@ -1,6 +1,7 @@
 package com.yyy.huojiapda.Bill;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -11,6 +12,7 @@ import androidx.annotation.Nullable;
 
 import com.yyy.huojiapda.R;
 import com.yyy.pda.util.PxUtil;
+import com.yyy.pda.util.StringUtil;
 
 import java.util.List;
 
@@ -76,7 +78,13 @@ public class BillDetailView extends FrameLayout {
     }
 
     private void setView(BillDetailInfo.Info.FormColumns column) {
-
+        BillDetailInfoView infoView = new BillDetailInfoView(context);
+        infoView.setTitle(column.getSFieldsName());
+        if (StringUtil.isColor(column.getSNameFontColor()))
+            infoView.setTitleColor(Color.parseColor(column.getSNameFontColor()));
+        if (StringUtil.isColor(column.getSValueFontColor())) {
+            infoView.setContentColor(Color.parseColor(column.getSValueFontColor()));
+        }
     }
 
     public void setColumns(List<BillDetailInfo.Info.FormColumns> columns) {

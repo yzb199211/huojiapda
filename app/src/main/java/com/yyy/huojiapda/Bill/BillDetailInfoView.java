@@ -1,8 +1,11 @@
 package com.yyy.huojiapda.Bill;
 
 import android.content.Context;
+import android.text.InputFilter;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -12,6 +15,8 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import com.yyy.huojiapda.R;
+import com.yyy.huojiapda.interfaces.OnLookUpListener;
+import com.yyy.huojiapda.util.EditInputFilter;
 import com.yyy.pda.util.StringUtil;
 
 
@@ -31,10 +36,18 @@ public class BillDetailInfoView extends LinearLayout {
     boolean contentBold;
     boolean singleLine;
 
+    String title;
+    String content;
+
     String fieldType;
     String text;
 
     int viewType;
+    OnLookUpListener onLookUpListener;
+
+    public void setOnLookUpListener(OnLookUpListener onLookUpListener) {
+        this.onLookUpListener = onLookUpListener;
+    }
 
     public BillDetailInfoView(Context context) {
         this(context, null);
@@ -78,13 +91,22 @@ public class BillDetailInfoView extends LinearLayout {
         etContent.setVisibility(VISIBLE);
         tvContent.setVisibility(GONE);
         switchView.setVisibility(GONE);
+        setEditLimit();
     }
 
     private void setTv() {
         etContent.setVisibility(GONE);
         tvContent.setVisibility(VISIBLE);
         switchView.setVisibility(GONE);
-        setTvConfig();
+        setTvLimit(tvContent.getText().toString());
+        tvContent.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (onLookUpListener != null) {
+                    onLookUpListener.onLookUP(info.getSFieldsName(), tvContent);
+                }
+            }
+        });
     }
 
 
@@ -94,11 +116,20 @@ public class BillDetailInfoView extends LinearLayout {
         switchView.setVisibility(VISIBLE);
     }
 
-    private void setTvConfig() {
 
+    private void setEditLimit() {
+        switch (info.getSFieldsType().toLowerCase()) {
+            case "int":
+                etContent.setInputType(EditorInfo.TYPE_CLASS_NUMBER);
+                break;
+            case "decimal":
+                InputFilter[] filters = {new EditInputFilter(info.getIDigit())};
+                etContent.setFilters(filters);
+                break;
+        }
     }
 
-    private void setLimit(String text) {
+    private void setTvLimit(String text) {
         switch (info.getSFieldsType().toLowerCase()) {
             case "int":
                 break;
@@ -128,5 +159,33 @@ public class BillDetailInfoView extends LinearLayout {
 
     private void initData() {
 
+    }
+
+    public void setTitleColor(int titleColor) {
+        this.titleColor = titleColor;
+    }
+
+    public void setContentColor(int contentColor) {
+        this.contentColor = contentColor;
+    }
+
+    public void setTitleBold(boolean titleBold) {
+        this.titleBold = titleBold;
+    }
+
+    public void setContentBold(boolean contentBold) {
+        this.contentBold = contentBold;
+    }
+
+    public void setSingleLine(boolean singleLine) {
+        this.singleLine = singleLine;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 }
