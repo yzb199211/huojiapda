@@ -1,5 +1,7 @@
 package com.yyy.huojiapda.Bill;
 
+import com.yyy.pda.util.StringUtil;
+
 import java.util.List;
 
 public class BillDetailInfo {
@@ -126,6 +128,16 @@ public class BillDetailInfo {
             private int iValueFontBold;
             private int iProportio;
 
+            public String getLookup() {
+                return lookup;
+            }
+
+            public void setLookup(String lookup) {
+                this.lookup = lookup;
+            }
+
+            private String lookup;
+
             public int getIRowNum() {
                 return iRowNum;
             }
@@ -167,6 +179,9 @@ public class BillDetailInfo {
             }
 
             public String getSFieldsType() {
+                if (sFieldsType.toLowerCase().equals("decimal") && iDigit == 0) {
+                    return "int";
+                }
                 return sFieldsType;
             }
 
@@ -207,7 +222,10 @@ public class BillDetailInfo {
             }
 
             public int getIReadOnly() {
-                return iReadOnly;
+                if (StringUtil.isNotEmpty(lookup))
+                    return 1;
+                else
+                    return iReadOnly;
             }
 
             public void setIReadOnly(int iReadOnly) {
@@ -300,6 +318,10 @@ public class BillDetailInfo {
 
             public void setIProportio(int iProportio) {
                 this.iProportio = iProportio;
+            }
+
+            public float getPercent() {
+                return iProportio / 100;
             }
         }
 

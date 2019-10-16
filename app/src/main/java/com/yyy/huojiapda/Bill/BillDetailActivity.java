@@ -155,6 +155,7 @@ public class BillDetailActivity extends AppCompatActivity {
     private void getMainLookup(List<BillDetailInfo.Info.MainLookup> mainLookup) {
         if (mainLookup != null && mainLookup.size() > 0) {
             this.mainLookup.addAll(mainLookup);
+            initMainColumnLookup();
         }
     }
 
@@ -164,8 +165,25 @@ public class BillDetailActivity extends AppCompatActivity {
         }
     }
 
+    private void initMainColumnLookup() {
+        for (int i = 0; i < mainLookup.size(); i++) {
+//            mainLookup.get(i).getSFieldName();
+            setMainColumnsLookup(mainLookup.get(i));
+        }
+    }
+
+    private void setMainColumnsLookup(BillDetailInfo.Info.MainLookup mainLookup) {
+        for (int i = 0; i < mainColumns.size(); i++) {
+            if (mainLookup.getSFieldName().equals(mainColumns.get(i).getSFieldsName())) {
+                mainColumns.get(i).setLookup(new Gson().toJson(mainLookup));
+                break;
+            }
+        }
+
+    }
+
     private void setView() {
-        
+
     }
 
 

@@ -105,7 +105,7 @@ public class ConfigureView extends FrameLayout {
             if (row == -1)
                 row = item.getRow();
             ConfigureInfoView rivItem = setItem(item);
-            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) rivItem.getTvTitle().getLayoutParams();
+            LinearLayout.LayoutParams params;
 //            params.width = context.getResources().getDimensionPixelOffset(R.dimen.dp_40);
 //            rivItem.getTvTitle().setLayoutParams(params);
             if (i + 1 < infoList.size() && row != infoList.get(i + 1).getRow())

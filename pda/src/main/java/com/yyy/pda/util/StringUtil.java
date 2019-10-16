@@ -31,6 +31,7 @@ public class StringUtil {
         Pattern pattern = Pattern.compile("^[-\\+]?[\\d]*$");
         return pattern.matcher(str).matches();
     }
+
     /**
      * 判断颜色是否正确
      *
@@ -74,13 +75,20 @@ public class StringUtil {
      * @param type
      * @return
      */
-    public static String getDate(String date, int type) throws Exception {
-        if (type == 1) {
-            date = date.substring(0, 16);
-            date = date.replace("T", " ");
+    public static String getDate(String date, int type) {
+        try {
+            if (type == 1) {
+                date = date.substring(0, 16);
+                date = date.replace("T", " ");
+                return date;
+            } else if (type == 2) {
+                date = date.substring(0, 10);
+            }
             return date;
-        } else
+        } catch (Exception e) {
             return date;
+        }
+
     }
 
     /**
@@ -128,9 +136,9 @@ public class StringUtil {
     }
 
     /*获取筛选条件默认值*/
-    public static String getDefaulText(Context context, String text,String prefrence) {
+    public static String getDefaulText(Context context, String text, String prefrence) {
         text = TextUtils.isEmpty(text) ? "" : text;
-        SharedPreferencesHelper preferencesHelper = new SharedPreferencesHelper(context,prefrence);
+        SharedPreferencesHelper preferencesHelper = new SharedPreferencesHelper(context, prefrence);
 
         switch (text) {
             case "UserID":
