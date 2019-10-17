@@ -280,8 +280,8 @@ public class BillDetailInfo {
                 this.sNameFontSize = sNameFontSize;
             }
 
-            public int getINameFontBold() {
-                return iNameFontBold;
+            public boolean getINameFontBold() {
+                return iNameFontBold==0?false:true;
             }
 
             public void setINameFontBold(int iNameFontBold) {
@@ -304,8 +304,8 @@ public class BillDetailInfo {
                 this.sValueFontSize = sValueFontSize;
             }
 
-            public int getIValueFontBold() {
-                return iValueFontBold;
+            public boolean getIValueFontBold() {
+                return iValueFontBold == 0 ? false : true;
             }
 
             public void setIValueFontBold(int iValueFontBold) {

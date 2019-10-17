@@ -1,6 +1,8 @@
 package com.yyy.huojiapda.Bill;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.text.InputFilter;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -27,22 +29,10 @@ public class BillDetailInfoView extends LinearLayout {
     private TextView tvTitle;
     private TextView tvContent;
     private EditText etContent;
-    private ImageView ivLookup;
+
     private Switch switchView;
 
-    int titleColor;
-    int contentColor;
-    boolean titleBold;
-    boolean contentBold;
-    boolean singleLine;
-
-    String title;
-    String content;
-
-    String fieldType;
     String text;
-
-    int viewType;
     OnLookUpListener onLookUpListener;
 
     public void setOnLookUpListener(OnLookUpListener onLookUpListener) {
@@ -65,7 +55,6 @@ public class BillDetailInfoView extends LinearLayout {
         tvContent = findViewById(R.id.tv_title);
         etContent = findViewById(R.id.et_content);
         switchView = findViewById(R.id.switch_view);
-
     }
 
     public void setInfo(BillDetailInfo.Info.FormColumns info) {
@@ -78,6 +67,7 @@ public class BillDetailInfoView extends LinearLayout {
     }
 
     private void initView() {
+        setTitle();
         if (info.getSFieldsType().toLowerCase().equals("bool")) {
             setSwitch();
         } else if (info.getIReadOnly() == 0) {
@@ -92,13 +82,16 @@ public class BillDetailInfoView extends LinearLayout {
         tvContent.setVisibility(GONE);
         switchView.setVisibility(GONE);
         setEditLimit();
+        editConfig();
     }
+
 
     private void setTv() {
         etContent.setVisibility(GONE);
         tvContent.setVisibility(VISIBLE);
         switchView.setVisibility(GONE);
-        setTvLimit(tvContent.getText().toString());
+        setTvLimit(info.getSDefaultValue());
+        textConfig();
         tvContent.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -114,6 +107,11 @@ public class BillDetailInfoView extends LinearLayout {
         etContent.setVisibility(GONE);
         tvContent.setVisibility(GONE);
         switchView.setVisibility(VISIBLE);
+        if (StringUtil.isInteger(info.getSDefaultValue())) {
+            if (Integer.parseInt(info.getSDefaultValue()) == 1) {
+                switchView.setChecked(true);
+            }
+        }
     }
 
 
@@ -157,35 +155,34 @@ public class BillDetailInfoView extends LinearLayout {
         }
     }
 
-    private void initData() {
 
+    private void setTitle() {
+        tvTitle.setText(info.getSFieldsName());
+        if (StringUtil.isInteger(info.getSNameFontSize()))
+            tvTitle.setTextSize(Integer.parseInt(info.getSNameFontSize()));
+        if (StringUtil.isColor(info.getSNameFontColor()))
+            tvTitle.setTextColor(Color.parseColor(info.getSNameFontColor()));
+        if (info.getINameFontBold())
+            tvTitle.setTypeface(Typeface.DEFAULT_BOLD);
     }
 
-    public void setTitleColor(int titleColor) {
-        this.titleColor = titleColor;
+    private void editConfig() {
+        etContent.setText(info.getSDefaultValue());
+        if (StringUtil.isInteger(info.getSValueFontSize()))
+            etContent.setTextSize(Integer.parseInt(info.getSValueFontSize()));
+        if (StringUtil.isColor(info.getSValueFontColor()))
+            etContent.setTextColor(Color.parseColor(info.getSValueFontColor()));
+        if (info.getIValueFontBold())
+            etContent.setTypeface(Typeface.DEFAULT_BOLD);
     }
 
-    public void setContentColor(int contentColor) {
-        this.contentColor = contentColor;
-    }
-
-    public void setTitleBold(boolean titleBold) {
-        this.titleBold = titleBold;
-    }
-
-    public void setContentBold(boolean contentBold) {
-        this.contentBold = contentBold;
-    }
-
-    public void setSingleLine(boolean singleLine) {
-        this.singleLine = singleLine;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
+    private void textConfig() {
+        tvContent.setText(info.getSDefaultValue());
+        if (StringUtil.isInteger(info.getSValueFontSize()))
+            tvContent.setTextSize(Integer.parseInt(info.getSValueFontSize()));
+        if (StringUtil.isColor(info.getSValueFontColor()))
+            tvContent.setTextColor(Color.parseColor(info.getSValueFontColor()));
+        if (info.getIValueFontBold())
+            tvContent.setTypeface(Typeface.DEFAULT_BOLD);
     }
 }
