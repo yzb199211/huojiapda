@@ -68,6 +68,7 @@ public class BillDetailInfoView extends LinearLayout {
 
     private void initView() {
         setTitle();
+        setTag(info.getSFieldsName());
         if (info.getSFieldsType().toLowerCase().equals("bool")) {
             setSwitch();
         } else if (info.getIReadOnly() == 0) {
@@ -96,7 +97,7 @@ public class BillDetailInfoView extends LinearLayout {
             @Override
             public void onClick(View v) {
                 if (onLookUpListener != null) {
-                    onLookUpListener.onLookUP(info.getSFieldsName(), tvContent);
+                    onLookUpListener.onLookUp(tvContent);
                 }
             }
         });
@@ -157,7 +158,7 @@ public class BillDetailInfoView extends LinearLayout {
 
 
     private void setTitle() {
-        tvTitle.setText(info.getSFieldsName());
+        tvTitle.setText(info.getSFieldsDisplayName());
         if (StringUtil.isInteger(info.getSNameFontSize()))
             tvTitle.setTextSize(Integer.parseInt(info.getSNameFontSize()));
         if (StringUtil.isColor(info.getSNameFontColor()))
@@ -184,5 +185,9 @@ public class BillDetailInfoView extends LinearLayout {
             tvContent.setTextColor(Color.parseColor(info.getSValueFontColor()));
         if (info.getIValueFontBold())
             tvContent.setTypeface(Typeface.DEFAULT_BOLD);
+    }
+
+    public String getText() {
+        return text;
     }
 }

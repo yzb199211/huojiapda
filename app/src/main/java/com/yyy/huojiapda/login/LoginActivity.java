@@ -114,8 +114,8 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void initView() {
-        String userId=(String) preferencesHelper.getSharedPreference("userid", "");
-        String passWord =  (String) preferencesHelper.getSharedPreference("password", "");
+        String userId = (String) preferencesHelper.getSharedPreference("userid", "");
+        String passWord = (String) preferencesHelper.getSharedPreference("password", "");
 
         etUser.setText(userId);
 //        etUser.setSelection(userId.length());
@@ -142,15 +142,22 @@ public class LoginActivity extends BaseActivity {
                 }
                 break;
             case R.id.btn_sweep:
+                textSplit();
 //                Toasts.showShort(this, "暂未开放");
-                permission(intent);
-//                String filePath = "/storage/emulated/0/Download/browser/031001700311-20586419.pdf";
-//                String fileName = "031001700311-20586419.pdf";
-//                DisplayFileActivity.openDispalyFileActivity(LoginActivity.this, filePath, fileName);
+//                permission(intent);
+
                 break;
         }
     }
 
+    private void textSplit() {
+        String string = "isnull(iInvoiceFinish,0)=0 and sType='#m.sTypeName#' and ibscDataCustomerRecNo=#m.iBscDataCustomerRecNo#";
+        String[] s = string.split("#");
+        for (int i = 0; i < s.length; i++) {
+            if (i % 2 != 0)
+                Log.e("position:" + i, s[i]);
+        }
+    }
 
     /**
      * 判断url,用户名和密码是否为空
