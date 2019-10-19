@@ -2,6 +2,7 @@ package com.yyy.pda.dialog;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -37,7 +38,7 @@ public class LoadingDialog {
         return mLoadingDialog;
     }
 
-    public static Dialog showDialogForLoading(Activity context) {
+    public static Dialog showDialogForLoading(Context context) {
         View view = LayoutInflater.from(context).inflate(R.layout.dialog_loading, null);
         avi = view.findViewById(R.id.avi);
         mLoadingDialog = new Dialog(context, R.style.LoadingDialogStyle);

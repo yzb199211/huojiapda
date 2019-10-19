@@ -1,5 +1,6 @@
 package com.yyy.huojiapda.Bill;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
@@ -23,8 +24,13 @@ import com.yyy.pda.net.NetUtil;
 import com.yyy.pda.util.PxUtil;
 import com.yyy.pda.util.SharedPreferencesHelper;
 import com.yyy.pda.util.StringUtil;
+import com.yyy.pda.util.Toasts;
 import com.yyy.pda.view.Configure.ConfigureInfoView;
 
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -59,7 +65,7 @@ public class BillDetailView extends FrameLayout {
         super(context, attrs);
         this.context = context;
         preferencesHelper = new SharedPreferencesHelper(context, context.getString(R.string.preferenceCache));
-        init();
+
     }
 
     private void init() {
@@ -136,8 +142,8 @@ public class BillDetailView extends FrameLayout {
             BillDetailInfo.Info.MainLookup lookupBean = new Gson().fromJson(lookup, BillDetailInfo.Info.MainLookup.class);
             String[] matchFields = spiltMacthFields(lookupBean.getSFixFilters());
             List<String> fields = getFields(matchFields);
-            getLookupData(getFilter(fields, lookupBean.getSFixFilters()), lookupBean.getSLookUpName());
-            getFilter(fields, lookupBean.getSChangeFilters());
+            getLookupData(getFilter(fields, lookupBean.getSFixFilters()), lookupBean.getSLookUpName(), lookupBean.getSMatchFields());
+//            getFilter(fields, lookupBean.getSChangeFilters());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -154,20 +160,49 @@ public class BillDetailView extends FrameLayout {
         return params;
     }
 
-    private void getLookupData(String filter, String lookupName) {
-
+    private void getLookupData(String filter, String lookupName, String sMatchFields) {
+        LoadingDialog.showDialogForLoading(context);
         new NetUtil(getLookupParams(filter, lookupName), url, new ResponseListener() {
             @Override
             public void onSuccess(String string) {
-
+                try {
+                    JSONObject jsonObject = new JSONObject(string);
+                    judgeSuccess(jsonObject, sMatchFields);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    FinishLoading(context.getString(R.string.error_json));
+                }
             }
 
             @Override
             public void onFail(IOException e) {
                 e.printStackTrace();
-
+                FinishLoading(e.getMessage());
             }
         });
+    }
+
+    private void judgeSuccess(JSONObject jsonObject, String sMatchFields) throws JSONException {
+        if (jsonObject.optBoolean("success")) {
+            JSONObject fields = jsonObject.optJSONObject("data");
+            String returnFields = fields.optString("sReturnField");
+            String displayFields = fields.optString("sDisplayField");
+            initLookUpData(jsonObject.optString("tables"), returnFields, displayFields, sMatchFields);
+        } else {
+            FinishLoading(jsonObject.optString("message"));
+        }
+    }
+
+    private void initLookUpData(String tables, String returnFields, String displayFields, String sMatchFields) throws JSONException {
+        JSONObject jsonObject = new JSONObject(tables);
+        JSONArray jsonArray = jsonObject.optJSONArray("LookupData");
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject item = jsonArray.getJSONObject(i);
+            item.put("id", jsonObject.opt(returnFields));
+            item.put("name", jsonObject.optString(displayFields));
+            item.put("link_id", sMatchFields);
+        }
+
     }
 
 
@@ -224,7 +259,20 @@ public class BillDetailView extends FrameLayout {
     }
 
 
-    public void setColumns(List<BillDetailInfo.Info.FormColumns> columns) {
+    public void setColumns(List<BillDetailInfo.Info.FormColumns> columns, Activity activity) {
         this.columns = columns;
+        init();
+    }
+
+
+    private void FinishLoading(@Nullable String msg) {
+        ((Activity) context).runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                LoadingDialog.cancelDialogForLoading();
+                if (StringUtil.isNotEmpty(msg))
+                    Toasts.showShort(context, msg);
+            }
+        });
     }
 }
